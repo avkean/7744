@@ -104,7 +104,7 @@ export default function BlueGridCrypto() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              Created by <a href="https://github.com/InsanelyAvner" target="_blank" className="nounderline hover:underline">InsanelyAvner</a> the awesome
+              Created by <a href="https://github.com/avkean" target="_blank" className="nounderline hover:underline">avkean</a>
             </motion.p>
           </div>
         </div>

@@ -11,11 +11,18 @@ import { decodeMessage } from '@/lib/crypto'
 export default function DecodeSection() {
   const [key, setKey] = useState('')
   const [decodedMessage, setDecodedMessage] = useState('')
+  const [error, setError] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDecode = async () => {
     const file = fileInputRef.current?.files?.[0]
-    if (!file || !key) return
+    setError('')
+    setDecodedMessage('')
+
+    if (!file || !key) {
+      setError('PNG image and key are required.')
+      return
+    }
 
     try {
       const message = await decodeMessage(file, key)
@@ -23,7 +30,7 @@ export default function DecodeSection() {
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Decode failed'
-      alert(message)
+      setError(message)
     }
   }
 
@@ -32,7 +39,7 @@ export default function DecodeSection() {
       <div className="space-y-4">
         <div>
           <Label htmlFor="decode-image">Upload Grid Image</Label>
-          <Input type="file" accept="image/png, image/jpeg" ref={fileInputRef} />
+          <Input id="decode-image" type="file" accept="image/png" ref={fileInputRef} />
         </div>
         <div>
           <Label htmlFor="decode-key">Key</Label>
@@ -44,6 +51,11 @@ export default function DecodeSection() {
           />
         </div>
         <Button onClick={handleDecode} className="w-full">Decode Message</Button>
+        {error && (
+          <p className="text-sm text-red-600" role="alert">
+            {error}
+          </p>
+        )}
       </div>
 
       {decodedMessage && (
